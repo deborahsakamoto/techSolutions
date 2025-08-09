@@ -18,15 +18,35 @@ namespace TechSolutions.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Equipment>>> GetAll()
+        public async Task<ActionResult<List<EquipmentListItemDto>>> GetAll()
         {
             return await _context.Equipments
             .AsNoTracking()
-            .Include(e => e.History)
+             .Select(e => new EquipmentListItemDto
+             {
+                 Id = e.Id,
+                 Name = e.Name,
+                 SerialNumber = e.SerialNumber,
+                 Description = e.Description,
+                 Status = e.Status,
+                 Location = e.Location,
+                 CreatedDate = e.CreatedDate,
+                 History = e.History
+                .OrderByDescending(h => h.ActionDate)
+                .Select(h => new ActionHistoryItemDto
+                {
+                    Id = h.Id,
+                    ActionDate = h.ActionDate,
+                    PerformedBy = h.PerformedBy,
+                    ActionType = h.ActionType,
+                    Notes = h.Notes
+                })
+                .ToList()
+             })
             .ToListAsync();
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Equipment>> GetById([FromRoute] int id)
         {
             var item = await _context.Equipments
@@ -57,7 +77,7 @@ namespace TechSolutions.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = equipment.Id }, equipment);
         }
 
-        [HttpPut("{id: int}")]
+        [HttpPut("{id}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] EquipmentDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -72,7 +92,7 @@ namespace TechSolutions.API.Controllers
             equipment.Location = dto.Location;
 
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok("Equipamento alterado com sucesso! :)");
         }
 
         [HttpDelete("{id}")]
@@ -83,11 +103,11 @@ namespace TechSolutions.API.Controllers
 
             _context.Equipments.Remove(equipment);
             await _context.SaveChangesAsync();
-            return NoContent();
+            return Ok("Equipamento removido com sucesso!");
         }
 
         [HttpPost("{id}/action")]
-        public async Task<ActionResult> RegisterAction([FromRoute] int id, [FromBody] ActionRequest request)
+        public async Task<ActionResult> RegisterAction([FromRoute] int id, [FromBody] ActionRequestDTO request)
         {
             var equipment = await _context.Equipments.FindAsync(id);
             if (equipment == null) return NotFound();
@@ -107,7 +127,7 @@ namespace TechSolutions.API.Controllers
             return Ok(action);
         }
 
-        [HttpGet("{id:int}/history")]
+        [HttpGet("{id}/history")]
         public async Task<IActionResult> GetHistory([FromRoute] int id)
         {
             var exists = await _context.Equipments.AnyAsync(e => e.Id == id);
@@ -121,15 +141,15 @@ namespace TechSolutions.API.Controllers
 
             return Ok(history);
         }
-        
-        [HttpPatch("{id:int}/status/{status:int}")]
+
+        [HttpPatch("{id}/status/{status}")]
         public async Task<IActionResult> ChangeStatus([FromRoute] int id, [FromRoute] int status)
         {
             var equipment = await _context.Equipments.FindAsync(id);
             if (equipment == null) return NotFound();
 
             if (!Enum.IsDefined(typeof(EquipmentStatus), status))
-                return BadRequest("Invalid status value.");
+                return BadRequest("Situação inválida.");
 
             equipment.Status = (EquipmentStatus)status;
             await _context.SaveChangesAsync();

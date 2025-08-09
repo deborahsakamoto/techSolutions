@@ -4,10 +4,10 @@ namespace TechSolutions.API.Models
 {
     public enum EquipmentStatus
     {
-        Available = 0,
-        InMaintenance = 1,
-        Transferred = 2,
-        Discarded = 3
+        Disponível = 0,
+        Manutenção = 1,
+        Transferido = 2,
+        Descartado = 3
     }
 
     public class Equipment
@@ -23,7 +23,7 @@ namespace TechSolutions.API.Models
         [MaxLength(500)]
         public string Description { get; set; } = string.Empty;
 
-        public EquipmentStatus Status { get; set; } = EquipmentStatus.Available;
+        public EquipmentStatus Status { get; set; } = EquipmentStatus.Disponível;
 
         [MaxLength(150)]
         public string Location { get; set; } = string.Empty;

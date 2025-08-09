@@ -1,16 +1,11 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace TechSolutions.API.DTOs
 {
-    public class ActionRequest
+    public class ActionHistoryItemDto
     {
-        [Required, MaxLength(120)]
+        public int Id { get; set; }
+        public DateTime ActionDate { get; set; }
         public string PerformedBy { get; set; } = string.Empty;
-
-        [Required, MaxLength(120)]
         public string ActionType { get; set; } = string.Empty;
-
-        [MaxLength(500)]
         public string Notes { get; set; } = string.Empty;
     }
 }

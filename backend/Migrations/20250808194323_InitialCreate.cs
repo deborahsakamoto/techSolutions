@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -12,7 +12,7 @@ namespace TechSolutions.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Equipment",
+                name: "Equipments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -26,7 +26,7 @@ namespace TechSolutions.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Equipment", x => x.Id);
+                    table.PrimaryKey("PK_Equipments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,9 +60,9 @@ namespace TechSolutions.API.Migrations
                 {
                     table.PrimaryKey("PK_ActionHistories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ActionHistories_Equipment_EquipmentId",
+                        name: "FK_ActionHistories_Equipments_EquipmentId",
                         column: x => x.EquipmentId,
-                        principalTable: "Equipment",
+                        principalTable: "Equipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -73,13 +73,13 @@ namespace TechSolutions.API.Migrations
                 column: "EquipmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipment_SerialNumber",
-                table: "Equipment",
+                name: "IX_Equipments_SerialNumber",
+                table: "Equipments",
                 column: "SerialNumber");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipment_Status",
-                table: "Equipment",
+                name: "IX_Equipments_Status",
+                table: "Equipments",
                 column: "Status");
 
             migrationBuilder.CreateIndex(
@@ -99,7 +99,7 @@ namespace TechSolutions.API.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Equipment");
+                name: "Equipments");
         }
     }
 }

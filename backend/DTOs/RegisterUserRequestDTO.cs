@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TechSolutions.API.DTOs
 {
-    public class RegisterUserRequest
+    public class RegisterUserRequestDTO
     {
         [Required, MaxLength(120)]
         public string Name { get; set; } = string.Empty;

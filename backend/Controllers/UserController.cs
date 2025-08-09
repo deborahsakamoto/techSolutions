@@ -19,16 +19,19 @@ namespace TechSolutions.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { mensagem = "Requisição inválida." });
 
+            var email = request.Email?.Trim().ToLowerInvariant() ?? string.Empty;
+            var password = request.Password?.Trim() ?? string.Empty;
+
             var user = await _context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == email);
 
-            if (user == null || user.PasswordHash != request.Password)
+            if (user == null || (user.PasswordHash ?? string.Empty).Trim() != password)
                 return Unauthorized(new { mensagem = "Credenciais inválidas." });
 
             return Ok(new
@@ -41,7 +44,7 @@ namespace TechSolutions.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterUserRequestDTO request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { mensagem = "Dados do usuário inválidos." });
@@ -69,7 +72,7 @@ namespace TechSolutions.API.Controllers
             });
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
