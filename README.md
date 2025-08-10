@@ -1,98 +1,73 @@
-# TechSolutions
-# TechSolutions – Sistema de Gestão de Equipamentos
+# Tech Solutions - Controle de Equipamentos
 
-Repositório contendo:
-- **Backend**: API desenvolvida em **C#/.NET 9** com **SQLite** e **Entity Framework Core**.
-- **Frontend**: Aplicação React (a ser implementada).
-
-O objetivo é gerenciar equipamentos eletrônicos, seu status e histórico de ações, com autenticação simples de usuários.  
-O código segue padrões em **inglês** para variáveis, classes e métodos, mas as mensagens de retorno para o usuário (em especial na API de login e cadastro) estão em **português**.
+Sistema para **cadastro, gerenciamento e histórico de ações** em equipamentos eletrônicos.  
+Desenvolvido com **.NET 9 + SQLite** no back-end e **React + Material UI** no front-end.
 
 ---
 
-## 📂 Estrutura do projeto
-
-TECHSOLUTIONS.API/
-├─ backend/ # API .NET 9
-│ ├─ Controllers/
-│ ├─ Data/
-│ ├─ DTOs/
-│ ├─ Models/
-│ ├─ Properties/
-│ ├─ appsettings.json
-│ └─ Program.cs
-└─ frontend/ # React (a ser desenvolvido)
-
+## 📌 Funcionalidades
+- Cadastro de equipamentos (nome, série, status, local, etc.).
+- Alteração de status (Disponível, Em manutenção, Transferido, Descartado).
+- Registro de ações no histórico do equipamento (com data, autor e observações).
+- Edição e exclusão de equipamentos.
+- Login de usuário.
+- API documentada com **Swagger**.
 
 ---
 
-## 🚀 Backend – .NET 9 + EF Core + SQLite
+## 🔗 Endpoints da API
 
-- **Banco de Dados**: SQLite (`techsolutions.db`)
-- **ORM**: Entity Framework Core
-- **Documentação**: Swagger UI ativado
-- **Seed de Dados**:
-  - Usuário admin (`admin@test.com` / `123`)
-  - Equipamentos de exemplo com histórico
+### **Equipamentos**
+| Método  | Endpoint                              | Descrição |
+|---------|---------------------------------------|-----------|
+| GET     | `/Equipments`                         | Lista todos os equipamentos. |
+| GET     | `/Equipments/{id}`                    | Busca detalhes de um equipamento. |
+| POST    | `/Equipments`                         | Cria um novo equipamento. |
+| PATCH   | `/Equipments/{id}/status/{status}`    | Atualiza o status do equipamento. |
+| DELETE  | `/Equipments/{id}`                    | Remove um equipamento. |
 
-### ▶️ Como rodar localmente
+### **Histórico de Ações**
+| Método  | Endpoint                              | Descrição |
+|---------|---------------------------------------|-----------|
+| GET     | `/Equipments/{id}/history`            | Lista ações realizadas no equipamento. |
+| POST    | `/Equipments/{id}/action`             | Registra nova ação no histórico. |
 
-1. Abra o terminal na pasta backend/
-2. Execute:
-bash
-dotnet restore
-dotnet tool update --global dotnet-ef
+### **Autenticação**
+| Método  | Endpoint      | Descrição |
+|---------|--------------|-----------|
+| POST    | `/login`     | Autentica o usuário e retorna token (se configurado). |
 
-dotnet ef migrations add InitialCreate
-dotnet ef database update
+---
 
-dotnet run
+## 🛠 Tecnologias Utilizadas
+**Backend**
+- .NET 9 (ASP.NET Core Web API)
+- Entity Framework Core
+- SQLite
+- Swagger (Swashbuckle)
 
+**Frontend**
+- React
+- TypeScript
+- Material UI (MUI)
+- Axios
 
-### 🛜 Acesse no navegador:
-http://localhost:5112/swagger
+---
 
-### 🔑 Endpoints principais
-Login – POST /api/User/login
-{
-  "email": "admin@test.com",
-  "password": "123"
-}
+## ▶️ Como Rodar o Projeto
 
-Resposta esperada:
-{
-  "mensagem": "Login realizado com sucesso.",
-  "id": 1,
-  "nome": "Admin",
-  "email": "admin@test.com"
-}
+### 1️⃣ Clonar o repositório
+    ```bash
+    git clone https://github.com/seu-usuario/tech-solutions.git
+    cd tech-solutions  
+    
+### 2️⃣ Configurar o backend
+    cd backend
+    dotnet restore
+    dotnet ef database update
+    dotnet run
 
-Cadastro – POST /api/User/register
-{
-  "name": "João da Silva",
-  "email": "joao@test.com",
-  "password": "123"
-}
-
-Obter por ID – GET /api/User/{id}
-
-GET /api/Equipment – Lista todos
-
-GET /api/Equipment/{id} – Detalhes + histórico
-
-POST /api/Equipment – Cria novo equipamento
-
-PUT /api/Equipment/{id} – Atualiza
-
-DELETE /api/Equipment/{id} – Remove
-
-POST /api/Equipment/{id}/actions – Registra ação no histórico
-
-GET /api/Equipment/{id}/history – Lista ações
-
-PATCH /api/Equipment/{id}/status/{status} – Altera status
-Status possíveis: 0=Available, 1=InMaintenance, 2=Transferred, 3=Discarded
-
-📌 Observações
-A API não possui autenticação JWT, apenas login simples para teste.
-
+### 3️⃣ Configurar o frontend
+    cd frontend
+    npm install
+    npm run dev
