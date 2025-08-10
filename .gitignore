@@ -1,4 +1,4 @@
-# Build
+# Build .NET
 bin/
 obj/
 
@@ -14,13 +14,30 @@ obj/
 *.log
 logs/
 
-# Database
+# Database files
 *.db
-
-Migrations/
-
-# EF Migrations history (keep migrations, ignore cache)
 *.db-journal
+Migrations/
 
 # Others
 *.DS_Store
+Thumbs.db
+
+# Node.js / React
+node_modules/
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Build output React (dist/build)
+dist/
+build/
+
+# Coverage (testes)
+coverage/
+
+# Temp files
+*.tmp
+*.temp
