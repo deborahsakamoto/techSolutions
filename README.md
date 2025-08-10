@@ -81,9 +81,12 @@ Desenvolvido com **.NET 9 + SQLite** no back-end e **React + Material UI** no fr
     dotnet watch run
 
 A API estará disponível em http://localhost:5112
+
 O Swagger estará em http://localhost:5112/swagger
 
 ### 3️⃣ Configurar o frontend
     cd frontend
     npm install
     npm run dev
+
+O frontend estará disponível em http://localhost:5173
