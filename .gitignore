@@ -17,6 +17,8 @@ logs/
 # Database
 *.db
 
+Migrations/
+
 # EF Migrations history (keep migrations, ignore cache)
 *.db-journal
 

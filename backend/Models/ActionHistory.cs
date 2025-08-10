@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 
 namespace TechSolutions.API.Models
@@ -19,9 +20,10 @@ namespace TechSolutions.API.Models
 
         [MaxLength(500)]
         public string Notes { get; set; } = string.Empty;
-        
+
         public int EquipmentId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(EquipmentId))]
         public Equipment Equipment { get; set; } = null!;
     }

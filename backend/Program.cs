@@ -13,10 +13,9 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
               .AllowAnyMethod();
-              // .AllowCredentials(); // só se for usar cookies/autenticação por sessão
+        // .AllowCredentials();
     });
 });
-
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -53,6 +52,7 @@ using (var scope = app.Services.CreateScope())
     var context = scope.ServiceProvider.GetRequiredService<DataContext>();
     DbInitializer.Initialize(context);
 }
+
 app.Run();
 
 

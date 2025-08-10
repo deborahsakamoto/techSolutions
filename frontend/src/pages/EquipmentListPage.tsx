@@ -1,9 +1,23 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import api from '../services/api'
-import { statusLabel } from '../types'
-import type { Equipment } from '../types'
+import LayoutBase from '../components/LayoutBase'
 import { useAuth } from '../state/AuthContext'
+import type { Equipment } from '../types'
+import { statusLabel } from '../types'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material'
 
 export default function EquipmentListPage() {
   const [items, setItems] = useState<Equipment[]>([])
@@ -21,46 +35,73 @@ export default function EquipmentListPage() {
     })()
   }, [])
 
-  if (loading) return <p style={{ padding: 20 }}>Carregando…</p>
+  if (loading) {
+    return (
+      <LayoutBase cardMaxWidth="1000px">
+        <Box display="flex" justifyContent="center" py={6}>
+          <CircularProgress />
+        </Box>
+      </LayoutBase>
+    )
+  }
 
   return (
-    <div style={{ maxWidth: 900, margin: '24px auto', fontFamily: 'system-ui' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Equipamentos</h2>
-        <div>
-          <span style={{ marginRight: 12 }}>{user?.nome}</span>
-          <button onClick={logout}>Sair</button>
-        </div>
-      </header>
+    <LayoutBase cardMaxWidth="1000px">
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+        <Typography variant="h5">Equipamentos</Typography>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Typography variant="body2" color="text.secondary">
+            {user?.nome}
+          </Typography>
+          <Button variant="outlined" onClick={logout}>Sair</Button>
+        </Stack>
+      </Stack>
 
-      <div style={{ margin: '12px 0' }}>
-        <Link to="/equipments/new">+ Novo equipamento</Link>
-      </div>
+      <Divider sx={{ mb: 2 }} />
 
-      <table width="100%" cellPadding={8} style={{ borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ textAlign: 'left' }}>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Série</th>
-            <th>Status</th>
-            <th>Local</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+      <Box mb={2}>
+        <Button
+          component={RouterLink}
+          to="/equipments/new"
+          variant="contained"
+        >
+          + Novo equipamento
+        </Button>
+      </Box>
+
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>Nome</TableCell>
+            <TableCell>Série</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Local</TableCell>
+            <TableCell align="right">Ações</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {items.map(e => (
-            <tr key={e.id} style={{ borderTop: '1px solid #ddd' }}>
-              <td>{e.id}</td>
-              <td>{e.name}</td>
-              <td>{e.serialNumber}</td>
-              <td>{e.status}</td>
-              <td>{e.location}</td>
-              <td><Link to={`/equipments/${e.id}`}>Detalhes</Link></td>
-            </tr>
+            <TableRow key={e.id} hover>
+              <TableCell>{e.id}</TableCell>
+              <TableCell>{e.name}</TableCell>
+              <TableCell>{e.serialNumber}</TableCell>
+              <TableCell>{statusLabel(e.status)}</TableCell>
+              <TableCell>{e.location}</TableCell>
+              <TableCell align="right">
+                <Button
+                  component={RouterLink}
+                  to={`/equipments/${e.id}`}
+                  size="small"
+                  variant="text"
+                >
+                  Detalhes
+                </Button>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </LayoutBase>
   )
 }

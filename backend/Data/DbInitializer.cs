@@ -27,7 +27,7 @@ namespace TechSolutions.API.Data
                     Name = "Dell Latitude 7320",
                     SerialNumber = "LAT-7320-001",
                     Description = "Ultrabook",
-                    Status = EquipmentStatus.Disponível,
+                    Status = EquipmentStatus.Disponivel,
                     Location = "Sede 01 - Sala de desenvolvimento"
                 };
 
@@ -36,7 +36,7 @@ namespace TechSolutions.API.Data
                     Name = "HP LaserJet Pro",
                     SerialNumber = "HP-LJP-201",
                     Description = "Impressora",
-                    Status = EquipmentStatus.Manutenção,
+                    Status = EquipmentStatus.Manutencao,
                     Location = "Sede 02 - Sala do gerente"
                 };
 

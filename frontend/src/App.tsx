@@ -4,6 +4,7 @@ import EquipmentListPage from './pages/EquipmentListPage'
 import EquipmentFormPage from './pages/EquipmentFormPage'
 import EquipmentDetailsPage from './pages/EquipmentDetailsPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import EquipmentEditPage from './pages/EquipmentEditPage'
 
 export default function App() {
   return (
@@ -36,6 +37,8 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route path="/equipments/:id/edit" element={<EquipmentEditPage />} />
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

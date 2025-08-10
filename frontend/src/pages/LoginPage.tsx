@@ -2,6 +2,9 @@ import type { FormEvent } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../state/AuthContext'
+import LayoutBase from '../components/LayoutBase'
+import { Box, Button, TextField, Typography, Alert, Stack } from '@mui/material'
+import logo from '../assets/icon.png'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('admin@teste.com')
@@ -22,19 +25,58 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ maxWidth: 400, margin: '60px auto', fontFamily: 'system-ui' }}>
-      <h2>TechSolutions – Login</h2>
-      <form onSubmit={onSubmit}>
-        <label>Email</label>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required style={{ width: '100%', padding: 8, marginBottom: 12 }} />
+    <LayoutBase cardMaxWidth="400px">
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        justifyContent="center"
+        sx={{ mb: 3 }}
+      >
+        <Box
+          component="img"
+          src={logo}
+          alt="Logo Tech Solutions"
+          sx={{ height: 32 }}
+        />
+        <Typography variant="h5" color="primary">
+          Tech Solutions
+        </Typography>
+      </Stack>
 
-        <label>Senha</label>
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required style={{ width: '100%', padding: 8, marginBottom: 12 }} />
+      <Box component="form" onSubmit={onSubmit} autoComplete="off">
+        <TextField
+          label="Email"
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          fullWidth
+          margin="normal"
+          autoComplete="username"
+        />
 
-        {error && <div style={{ color: 'crimson', marginBottom: 12 }}>{error}</div>}
+        <TextField
+          label="Senha"
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          fullWidth
+          margin="normal"
+          autoComplete="current-password"
+        />
 
-        <button type="submit" style={{ padding: '8px 12px' }}>Entrar</button>
-      </form>
-    </div>
+        {error && (
+          <Alert severity="error" sx={{ mt: 1 }}>
+            {error}
+          </Alert>
+        )}
+
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+          <Button type="submit" variant="contained">
+            Entrar
+          </Button>
+        </Box>
+      </Box>
+    </LayoutBase>
   )
 }

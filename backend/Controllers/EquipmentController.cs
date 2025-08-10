@@ -106,18 +106,27 @@ namespace TechSolutions.API.Controllers
             return Ok("Equipamento removido com sucesso!");
         }
 
-        [HttpPost("{id}/action")]
-        public async Task<ActionResult> RegisterAction([FromRoute] int id, [FromBody] ActionRequestDTO request)
+        [HttpPost("{id:int}/action")]
+        public async Task<IActionResult> RegisterAction([FromRoute] int id, [FromBody] ActionRequestDTO request)
         {
             var equipment = await _context.Equipments.FindAsync(id);
-            if (equipment == null) return NotFound();
+            if (equipment == null)
+                return NotFound(new { mensagem = "Equipamento não encontrado." });
+
+
+            var performedBy = (request.PerformedBy ?? "").Trim();
+            var actionType = (request.ActionType ?? "").Trim();
+            var notes = (request.Notes ?? "").Trim();
+
+            if (string.IsNullOrEmpty(performedBy) && string.IsNullOrEmpty(actionType) && string.IsNullOrEmpty(notes))
+                return BadRequest(new { mensagem = "Preencha pelo menos um campo." });
 
             var action = new ActionHistory
             {
                 EquipmentId = id,
-                PerformedBy = request.PerformedBy,
-                ActionType = request.ActionType,
-                Notes = request.Notes,
+                PerformedBy = string.IsNullOrEmpty(performedBy) ? "Admin" : performedBy,
+                ActionType = actionType,
+                Notes = notes,
                 ActionDate = DateTime.UtcNow
             };
 
@@ -126,6 +135,7 @@ namespace TechSolutions.API.Controllers
 
             return Ok(action);
         }
+
 
         [HttpGet("{id}/history")]
         public async Task<IActionResult> GetHistory([FromRoute] int id)
