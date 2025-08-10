@@ -59,7 +59,7 @@ Desenvolvido com **.NET 9 + SQLite** no back-end e **React + Material UI** no fr
 ### 1️⃣ Clonar o repositório
     ```bash
     git clone https://github.com/deborahsakamoto/techSolutions.git
-    cd tech-solutions  
+    cd techSolutions  
     
 ### 2️⃣ Configurar o backend
     cd backend
