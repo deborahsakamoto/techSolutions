@@ -63,9 +63,26 @@ Desenvolvido com **.NET 9 + SQLite** no back-end e **React + Material UI** no fr
     
 ### 2️⃣ Configurar o backend
     cd backend
+    # Instalar EF Core CLI (se ainda não tiver)
+    dotnet tool update --global dotnet-ef
+    
+    # Restaurar pacotes
     dotnet restore
+    
+    # Adicionar dependência do EF Design (caso não esteja instalada)
+    dotnet add package Microsoft.EntityFrameworkCore.Design
+    
+    # Criar as migrations
+    dotnet ef migrations add InitialCreate
+    
+    # Atualizar/criar o banco de dados
     dotnet ef database update
-    dotnet run
+    
+    # Rodar o servidor
+    dotnet watch run
+
+A API estará disponível em http://localhost:5112
+O Swagger estará em http://localhost:5112/swagger
 
 ### 3️⃣ Configurar o frontend
     cd frontend
